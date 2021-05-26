@@ -6,10 +6,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import ScreenSignin from './screens/ScreenSignin';
 import ScreenHome from './screens/ScreenHome';
 import UserContext from './context/user.context';
-import { IconButton } from './components/IconButton';
 import * as SplashScreen from 'expo-splash-screen';
 import firebase from './config/firebase.config';
 import { FBService } from './services/auth.service';
+import { IconButton } from './components/IconButton/IconButton';
 
 const Stack = createStackNavigator(); // Navigator, Screen
 
@@ -31,7 +31,6 @@ export default function App() {
       try {
         SplashScreen.preventAutoHideAsync();
         firebase.auth().onAuthStateChanged((user) => {
-          console.log('el user', user);
           setUser(user);
           SplashScreen.hideAsync();
         });

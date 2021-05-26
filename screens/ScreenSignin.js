@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Image, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Button, Image, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import UserContext from '../context/user.context';
 import { FBService } from '../services/auth.service';
 
@@ -9,32 +9,40 @@ export default class ScreenSignin extends React.Component {
     this.state = {
       email: null,
       password: null,
+      isLoading: false,
     };
   }
 
   async createUserWithEmail(login) {
-    FBService.signUp('iwokloco@gmail.com', '123456')
+    this.setState({ isLoading: true });
+    FBService.signUp(this.state.email, this.state.password)
       .then((res) => {
-        console.log('signUp success : ', res);
+        this.setState({ isLoading: false });
         login(res);
       })
       .catch(this.onLoginFail.bind(this));
   }
 
   async signInWithEmail(login) {
+    this.setState({ isLoading: true });
     const { email, password } = this.state;
     if (email.length && password.length > 5) {
       FBService.signIn(email, password)
-        .then((res) => login(res))
+        .then((res) => {
+          this.setState({ isLoading: false });
+          login(res);
+        })
         .catch(this.onLoginFail.bind(this));
     }
   }
 
   onLoginFail(error) {
+    this.setState({ isLoading: false });
     console.log(error);
   }
 
   render() {
+    const { isLoading } = this.state;
     return (
       <View style={[styles.container, { flexDirection: 'column' }]}>
         <View style={{ flex: 1, backgroundColor: 'red' }}></View>
@@ -43,6 +51,7 @@ export default class ScreenSignin extends React.Component {
             <View>
               <TextInput placeholder="Email" style={styles.input} onChangeText={(text) => this.setState({ email: text })} value={this.state.email} autoCapitalize="none" />
               <TextInput placeholder="Password" style={styles.input} onChangeText={(text) => this.setState({ password: text })} value={this.state.password} secureTextEntry />
+              {isLoading ? <ActivityIndicator size="large" color="#00ff00" /> : <></>}
               <UserContext.Consumer>
                 {(userContextValue) => {
                   return (
