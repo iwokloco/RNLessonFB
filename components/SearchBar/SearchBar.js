@@ -10,3 +10,17 @@ export default function SearchBar(props) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  image: {
+    height: 100,
+    width: 100,
+  },
+  red: {
+    color: 'red',
+  },
+});
