@@ -52,7 +52,10 @@ const MOCK_LIST = [
 ];
 
 export default function ProductsList(props) {
-  console.log('ProductsList');
+  function getMore() {
+    console.log('getMore');
+  }
+
   return (
     <View>
       <FlatList data={MOCK_LIST} keyExtractor={(item, index) => index} renderItem={(flatListElement) => <ProductItemList data={flatListElement} />} />
